@@ -60,4 +60,18 @@ const Content = styled.div<{width: number; height: number} & AkeneoThemedProps>`
   margin-top: 30px;
 `;
 
-export {StoryStyle, PreviewGrid, PreviewCard, PreviewContainer, LabelContainer, Subtitle, Content};
+const SpaceContainer = styled.div<{width: number; height: number}>`
+  width: ${({width}) => `${width}px`};
+  height: ${({height}) => `${height}px`};
+`;
+
+export {
+  StoryStyle,
+  PreviewGrid,
+  PreviewCard,
+  PreviewContainer,
+  LabelContainer,
+  Subtitle,
+  Content,
+  SpaceContainer,
+};
