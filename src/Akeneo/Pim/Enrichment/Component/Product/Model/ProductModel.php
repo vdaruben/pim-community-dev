@@ -4,7 +4,6 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Model;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\EntityWithQuantifiedAssociationTrait;
 use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\QuantifiedAssociationCollection;
-use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
@@ -32,9 +31,9 @@ class ProductModel implements ProductModelInterface
      */
     protected WriteValueCollection $values;
 
-    protected \DateTime $created;
+    protected ?\DateTime $created = null;
 
-    protected \DateTime $updated;
+    protected ?\DateTime $updated = null;
 
     protected Collection $categories;
 
@@ -733,6 +732,7 @@ class ProductModel implements ProductModelInterface
     {
         $association = $this->getAssociationForTypeCode($associationTypeCode);
         if (null === $association) {
+            // TODO error message
             throw new \LogicException();
         }
 
@@ -745,11 +745,8 @@ class ProductModel implements ProductModelInterface
     public function removeAssociatedProduct(ProductInterface $product, string $associationTypeCode): void
     {
         $association = $this->getAssociationForTypeCode($associationTypeCode);
-        if (null === $association) {
-            throw new \LogicException();
-        }
 
-        if ($association->hasProduct($product)) {
+        if ($association instanceof AssociationInterface && $association->hasProduct($product)) {
             $association->removeProduct($product);
             $this->dirty = true;
         }
@@ -766,6 +763,7 @@ class ProductModel implements ProductModelInterface
     {
         $association = $this->getAssociationForTypeCode($associationTypeCode);
         if (null === $association) {
+            // TODO error message
             throw new \LogicException();
         }
 
@@ -778,11 +776,8 @@ class ProductModel implements ProductModelInterface
     public function removeAssociatedProductModel(ProductModelInterface $productModel, string $associationTypeCode): void
     {
         $association = $this->getAssociationForTypeCode($associationTypeCode);
-        if (null === $association) {
-            throw new \LogicException();
-        }
 
-        if ($association->getProductModels()->contains($productModel)) {
+        if ($association instanceof AssociationInterface && $association->getProductModels()->contains($productModel)) {
             $association->removeProductModel($productModel);
             $this->dirty = true;
         }
@@ -799,6 +794,7 @@ class ProductModel implements ProductModelInterface
     {
         $association = $this->getAssociationForTypeCode($associationTypeCode);
         if (null === $association) {
+            // TODO error message
             throw new \LogicException();
         }
 
@@ -811,11 +807,8 @@ class ProductModel implements ProductModelInterface
     public function removeAssociatedGroup(GroupInterface $group, string $associationTypeCode): void
     {
         $association = $this->getAssociationForTypeCode($associationTypeCode);
-        if (null === $association) {
-            throw new \LogicException();
-        }
 
-        if ($association->getGroups()->contains($group)) {
+        if ($association instanceof AssociationInterface && $association->getGroups()->contains($group)) {
             $association->removeGroup($group);
             $this->dirty = true;
         }
